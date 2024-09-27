@@ -1,0 +1,53 @@
+<template>
+    <!-- Header section with dynamic heading label -->
+    <header class="slds-var-p-around_small">{headingLabel}</header>
+    <div class="slds-region_medium" style="width:100%">
+        <div class="slds-path">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <!-- Navigation list for the progress bar steps -->
+
+                            <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal"
+                                aria-labelledby="slds-path__stage-name">
+
+                                <!-- Loop through each step and render it -->
+                                <template for:each={steps} for:item="option">
+                                    <li class={option.class} role="presentation" key={option.index}>
+                                        <a aria-selected="false" class="slds-path__link" href="#" id="path-50"
+                                            role="option" tabindex="-1" onclick={handlePathFocus}
+                                            data-index={option.index}>
+                                            <!-- Icon for the step -->
+                                            <span class="slds-path__stage">
+ <lightning-icon icon-name="utility:check" alternative-text="Complete" variant="inverse" size="small"></lightning-icon>
+<span class="slds-assistive-text">{option.stage}</span>
+                                            </span>
+                                            <!-- Step label -->
+                                            <span class="slds-path__title">{option.label}</span>
+                                            <!-- Formatted date for the step -->
+                                            <p>
+                                                <lightning-formatted-date-time class="slds-path__title"
+                                                    value={option.date} year="2-digit" month="2-digit" day="2-digit">
+                                                </lightning-formatted-date-time>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </template>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Action section for marking the status as complete -->
+                <div class="slds-grid slds-path__action">
+                    <span id="slds-path__stage-name" class="slds-path__stage-name">Stage: {currentStep}</span>
+                    <button class="slds-button slds-button_brand slds-path__mark-complete" onclick={handleUpdate}>
+    <lightning-icon icon-name="utility:check" alternative-text="Complete" size="x-small" class="slds-button__icon slds-button__icon_left" variant="inverse"></lightning-icon>Update status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</template>

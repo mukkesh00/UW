@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<apiVersion>60.0</apiVersion>
+	<isExposed>true</isExposed>
+	<targets>
+		<target>lightning__AppPage</target>
+		<target>lightning__HomePage</target>
+		<target>lightning__RecordPage</target>
+	</targets>
+	  <targetConfigs>
+        <targetConfig targets="lightning__RecordPage,lightning__AppPage,lightning__HomePage">
+            <property name="headingLabel" type="String"  label="Label of the component"  description="test decsription" placeholder="na"/>
+            <property name="sobjectAPI" type="String"  label="Enter the Object API name"  description="test decsription" placeholder="na"/>
+            <property name="picklistAPI" type="String"  label="Enter the picklist field API name"  description="test decsription" placeholder="na" />
+            <property name="picklistChoicesAPI" type="String"  label="picklist choices API name"  description="test decsription" placeholder="enter upto 10 picklist choice api names seperated by ,"/>
+            <property name="dateAPI" type="String"  label="Date fields API name"  description="test decsription" placeholder="enter upto 10 date api names seperated by ," />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

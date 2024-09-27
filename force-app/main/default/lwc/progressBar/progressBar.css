@@ -1,0 +1,43 @@
+.slds-path__item {
+border-top-right-radius: 2rem;
+border-bottom-right-radius: 2rem;
+}
+
+.slds-path__link {
+	border: 4rem;
+    display: block;
+    height: auto;
+}
+
+.slds-path__nav .slds-is-active:first-child .slds-path__link{
+	height:auto !important;
+}
+
+.slds-path__item:first-child:before, .slds-path__item:first-child:after {
+	height: 50% !important;
+}
+
+.slds-path__item:first-child:before, .slds-path__item:first-child:after {
+	left: 2.125rem !important;
+}
+
+.slds-path__item:last-child:before, .slds-path__item:last-child:after {
+    right: 1.625rem !important;
+}
+
+.slds-path__item:before, .slds-path__item:after {
+    height: 50% !important;
+    content: '';
+    position: absolute;
+    left: -.5rem !important;
+    right: -.01rem !important;
+    cursor: pointer;
+}
+
+.slds-path__nav {
+    align-items: normal;
+}
+
+.slds-path__item:last-child .slds-path__link, .slds-path__item:first-child .slds-path__link, .slds-path__item .slds-path__link {
+    height: 100%;
+}
