@@ -41,3 +41,12 @@ border-bottom-right-radius: 2rem;
 .slds-path__item:last-child .slds-path__link, .slds-path__item:first-child .slds-path__link, .slds-path__item .slds-path__link {
     height: 100%;
 }
+
+.slds-path__nav .slds-is-complete:before, .slds-path__nav .slds-is-complete:after, .slds-path__nav .slds-is-complete {
+    background: #3ba755 !important;
+}
+
+.slds-path__nav .slds-is-active:before, .slds-path__nav .slds-is-active:after, .slds-path__nav .slds-is-active, .slds-region_medium .slds-path__mark-complete{
+    background: #014486 !important;
+    border-color:  #014486 !important;
+}

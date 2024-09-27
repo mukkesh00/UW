@@ -15,21 +15,27 @@ public class progressBarController {
 	
 	@AuraEnabled(cacheable=true)
 	Public static map<String, String> getPicklistOptions(String  objName, String fieldName, String datefields, String recordId, String picklistChoices ){
- Set<String> picklistSet = new Set<String>(picklistChoices.split(','));
-        List<String> picklistList = new List<String>(picklistSet);
+        Set<String> picklistSet = new Set<String>(picklistChoices.split(','));
 
         Set<String> dateSet = new Set<String>(dateFields.split(','));
-        List<String> dateList = new List<String>(dateSet);
 
         List<String> processedPicklists = new List<String>();
         List<String> processedDates = new List<String>();
 
-        for (Integer i = 0; i < 10 && i < picklistList.size(); i++) {
-            processedPicklists.add(picklistList[i]);
+        Integer i = 0;
+        for(String ss : picklistSet)
+        {
+        i++;
+        if(i < 10)
+            processedPicklists.add(ss);
         }
 
-        for (Integer i = 0; i < 10 && i < dateList.size(); i++) {
-            processedDates.add(dateList[i]);
+        Integer j = 0;
+        for(String ss : dateSet)
+        {
+        j++;
+        if(j < 10)
+            processedDates.add(ss);
         }
 
         String dateString = String.join(processedDates, ',');
@@ -43,7 +49,7 @@ public class progressBarController {
 
         for (Schema.PicklistEntry picklistEntry : picklistEntries) {
             if (processedPicklists.contains(picklistEntry.getValue())) {
-                choices.put(picklistEntry.getLabel(), picklistEntry.getValue());
+                choices.put(picklistEntry.getValue(),picklistEntry.getLabel());
             }
         }
 
@@ -55,4 +61,26 @@ public class progressBarController {
 
         return choices;
 	}
+
+
+    @AuraEnabled
+    public static String updateRecord(String objectApiName, String recordId, String fieldApiName, Object fieldValue) {
+        // Create an instance of the sObject dynamically
+        sObject recordToUpdate = Schema.getGlobalDescribe().get(objectApiName).newSObject(recordId);
+
+        // Set the field value dynamically
+        recordToUpdate.put(fieldApiName, fieldValue);
+
+        String result = '';
+        try {
+            // Perform the update
+            update recordToUpdate;
+            result = 'true';
+        } catch (DmlException e) {
+            System.debug('An error occurred: ' + e.getMessage());
+            result = null;
+        }
+        return result;
+    }
+
 }

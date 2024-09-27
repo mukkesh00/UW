@@ -1,5 +1,9 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getPicklistOptions from '@salesforce/apex/progressBarController.getPicklistOptions'
+import updateRecord from '@salesforce/apex/progressBarController.updateRecord'
+import { ShowToastEvent } from "lightning/platformShowToastEvent";
+
+
 export default class ProgressBar extends LightningElement {
 
     // Public properties to be set from the parent component or page
@@ -16,6 +20,7 @@ export default class ProgressBar extends LightningElement {
     @track steps = []; // Tracks the steps for the progress bar
     @track currentStep = ''; // Tracks the current step label
     picklistChoices = []; // Stores picklist choices
+    currentStepValue = '';// Tracks the current step value
 
     // Wire the Apex method to fetch picklist options and date fields
 
@@ -37,10 +42,20 @@ export default class ProgressBar extends LightningElement {
                 }
             });
 
+            console.log(this.picklistData)
+            console.log(this.dateData)
+
+
+            let pickArray = this.picklistChoicesAPI.split(',')
+            pickArray = pickArray.slice(0, 10)
+
             // Prepare the steps for the progress bar
             let tempSteps = []
-            this.picklistData.keys().forEach((item, index) => {
-                tempSteps.push({ label: this.picklistData.get(item), class: 'slds-path__item slds-is-incomplete', stage: '', index: index })
+            pickArray.forEach((item1, index1) => {
+                this.picklistData.keys().forEach((item) => {
+                    if (item == item1)
+                        tempSteps.push({ label: this.picklistData.get(item), class: 'slds-path__item slds-is-incomplete', stage: '', index: index1, value: item })
+                })
             })
 
             // Add date information to the steps
@@ -51,8 +66,6 @@ export default class ProgressBar extends LightningElement {
             })
 
             this.steps = tempSteps  // Update the steps
-            //  console.log(this.dateData)
-            //  console.log(this.picklistData)
         }
         else if (error) {
             console.error(error)// Log any errors
@@ -63,7 +76,8 @@ export default class ProgressBar extends LightningElement {
     handlePathFocus(event) {
         this.currentStep = ''
         event.preventDefault();
-        const stepIndex = parseInt(event.currentTarget.dataset.index, 10);
+        console.log(event.currentTarget.dataset.index)
+        let stepIndex = parseInt(event.currentTarget.dataset.index, 10);
 
         // Update the class and stage of each step based on the focused step
         this.steps = this.steps.map((item, index) => {
@@ -71,6 +85,7 @@ export default class ProgressBar extends LightningElement {
                 return { ...item, class: 'slds-path__item slds-is-complete', stage: 'Stage Complete' };
             } else if (index === stepIndex) {
                 this.currentStep = item.label + ' ' + (item.date || '');
+                this.currentStepValue = item.value
                 return { ...item, class: 'slds-path__item slds-is-active slds-is-current', stage: 'Current Stage:' };
             } else {
                 return { ...item, class: 'slds-path__item slds-is-incomplete', stage: '' };
@@ -78,7 +93,18 @@ export default class ProgressBar extends LightningElement {
         });
     }
 
-    handleUpdate(event){
-        
+//Handles update functionality
+    handleUpdate(event) {
+        updateRecord({ objectApiName: this.sobjectAPI, recordId: this.recordId, fieldApiName: this.picklistAPI, fieldValue: this.currentStepValue })
+            .then(result => {
+                if (result)
+                    this.dispatchEvent(new ShowToastEvent({
+                        title: "Sucess",
+                        message: "The value is updated!!",
+                        variant: "success",
+                    }));
+            })
+            .catch(error => console.log(error))
     }
+
 }
