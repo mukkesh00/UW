@@ -54,7 +54,7 @@ public class progressBarController {
         }
 
         System.debug(recordId);
-        String queryRec = 'SELECT ' + dateString + ' FROM ' + objName + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+        String queryRec = 'SELECT ' + fieldName +','+ dateString + ' FROM ' + objName + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
         System.debug(queryRec);
         List<SObject> objectList = Database.query(queryRec);
         choices.put('date', JSON.serialize(objectList));

@@ -27,24 +27,25 @@ export default class ProgressBar extends LightningElement {
     @wire(getPicklistOptions, { objName: '$sobjectAPI', fieldName: '$picklistAPI', datefields: '$dateAPI', recordId: '$recordId', picklistChoices: '$picklistChoicesAPI' })
     results({ data, error }) {
         if (data) {
+            let selStepValue
             //  console.log('-----------', data)
-
             // Process the data returned from the Apex method
-            Object.keys(data).forEach((key) => {
+            Object.keys(data).forEach((key, index) => {
                 if (key != 'date')
                     this.picklistData.set(key, data[key])
                 else if (key == 'date') {
                     let tmp = JSON.parse(data[key])[0]
-                    Object.keys(tmp).forEach(key => {
-                        if (this.dateAPI.includes(key))
-                            this.dateData.set(key, tmp[key])
+                    Object.keys(tmp).forEach(key1 => {
+                        if (this.dateAPI.includes(key1))
+                            this.dateData.set(key1, tmp[key1]) 
+                        if(key1 == this.picklistAPI){
+                            selStepValue = tmp[key1]
+                        }
                     })
                 }
             });
-
-            console.log(this.picklistData)
-            console.log(this.dateData)
-
+            // console.log(this.picklistData)
+            // console.log(this.dateData)
 
             let pickArray = this.picklistChoicesAPI.split(',')
             pickArray = pickArray.slice(0, 10)
@@ -59,13 +60,14 @@ export default class ProgressBar extends LightningElement {
             })
 
             // Add date information to the steps
-            var j = 0
             this.dateData.keys().forEach((item, index) => {
-                tempSteps[j].date = this.dateData.get(item)
-                j++;
+                tempSteps[index].date = this.dateData.get(item)
             })
 
             this.steps = tempSteps  // Update the steps
+            if(selStepValue){ //Show the existing picklist value
+                this.handlePathFocus({currentTarget:{dataset:{index : this.steps.findIndex( i => i.value ==  selStepValue)}}})
+            }
         }
         else if (error) {
             console.error(error)// Log any errors
@@ -75,9 +77,10 @@ export default class ProgressBar extends LightningElement {
     // Handle the focus event on the progress bar steps
     handlePathFocus(event) {
         this.currentStep = ''
-        event.preventDefault();
+        event.type ? event.preventDefault() : ''
         console.log(event.currentTarget.dataset.index)
         let stepIndex = parseInt(event.currentTarget.dataset.index, 10);
+        
 
         // Update the class and stage of each step based on the focused step
         this.steps = this.steps.map((item, index) => {
