@@ -14,7 +14,7 @@
 public class progressBarController {
 	
 	@AuraEnabled(cacheable=true)
-	Public static map<String, String> getPicklistOptions(String  objName, String fieldName, String datefields, String recordId, String picklistChoices ){
+	Public static map<String, String> getPicklistOptions(String  objName, String fieldName, String datefields, String recordId, String picklistChoices,String booleanField ){
         Set<String> picklistSet = new Set<String>(picklistChoices.split(','));
 
         Set<String> dateSet = new Set<String>(dateFields.split(','));
@@ -54,7 +54,10 @@ public class progressBarController {
         }
 
         System.debug(recordId);
-        String queryRec = 'SELECT ' + fieldName +','+ dateString + ' FROM ' + objName + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
+        String queryRec = 'SELECT ' + fieldName +','+ dateString ;
+        if(!String.isBlank(booleanField))
+            queryRec = queryRec + ', ' + booleanField;
+        queryRec = queryRec + ' FROM ' + objName + ' WHERE Id = \'' + recordId + '\' LIMIT 1';
         System.debug(queryRec);
         List<SObject> objectList = Database.query(queryRec);
         choices.put('date', JSON.serialize(objectList));
