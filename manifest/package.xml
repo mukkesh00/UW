@@ -7,6 +7,7 @@
 	</types>
 	<types>
 		<members>progressBar</members>
+		<members>progressBarReadOnly</members>
 		<name>LightningComponentBundle</name>
 	</types>
 	<version>60.0</version>
