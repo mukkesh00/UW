@@ -76,9 +76,15 @@ export default class ProgressBar extends LightningElement {
                 })
             })
 
+            let dateArray = this.dateAPI.split(',')
+            dateArray = dateArray.slice(0, 10)
+
             // Add date information to the steps
-            this.dateData.keys().forEach((item, index) => {
-                tempSteps[index].date = this.dateData.get(item)
+            dateArray.forEach((item1, index1) => {
+                this.dateData.keys().forEach((item) => {
+                    if (item == item1)
+                        tempSteps[index1].date = this.dateData.get(item)
+                })
             })
 
             this.steps = tempSteps  // Update the steps
