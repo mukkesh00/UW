@@ -28,7 +28,7 @@ public class ProgressBarControllerTest {
         String picklistChoices = 'Agriculture,Apparel,Banking';
 
         // Call the method
-        Map<String, String> result = ProgressBarController.getPicklistOptions(objName, fieldName, dateFields, recordId, picklistChoices);
+        Map<String, String> result = ProgressBarController.getPicklistOptions(objName, fieldName, dateFields, recordId, picklistChoices,'');
 
         // Verify the results
         System.assert(result.containsKey('Agriculture'));
