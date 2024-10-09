@@ -67,9 +67,15 @@ export default class ProgressBar extends LightningElement {
             // Prepare the steps for the progress bar
             let tempSteps = []
             pickArray.forEach((item1, index1) => {
-                this.picklistData.keys().forEach((item) => {
-                    if (item == item1)
-                        tempSteps.push({ label: this.picklistData.get(item), class: 'slds-path__item slds-is-incomplete', stage: '', index: index1, value: item })
+            // this.picklistData.keys().forEach((item) => {
+            //     if (item == item1)
+            //         tempSteps.push({ label: this.picklistData.get(item), class: 'slds-path__item slds-is-incomplete', stage: '', index: index1, value: item })
+            // })
+
+                this.picklistData.forEach((value, key) => {
+                if (key == item1) {
+                    tempSteps.push({ label: value, class: 'slds-path__item slds-is-incomplete', stage: '', index: index1, value: key });
+                }
                 })
             })
 
@@ -78,9 +84,14 @@ export default class ProgressBar extends LightningElement {
 
             // Add date information to the steps
             dateArray.forEach((item1, index1) => {
-                this.dateData.keys().forEach((item) => {
-                    if (item == item1)
-                        tempSteps[index1].date = this.dateData.get(item)
+                // this.dateData.keys().forEach((item) => {
+                //     if (item == item1)
+                //         tempSteps[index1].date = this.dateData.get(item)
+                // })
+                this.dateData.forEach((value, key) => {
+                if (key == item1) {
+                    tempSteps[index1].date = value;
+                }
                 })
             })
 
